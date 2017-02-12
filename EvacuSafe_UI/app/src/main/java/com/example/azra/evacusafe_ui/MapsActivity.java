@@ -10,7 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivityadmin extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -23,6 +23,7 @@ public class MapsActivityadmin extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
 
     /**
      * Manipulates the map once available.
@@ -38,16 +39,8 @@ public class MapsActivityadmin extends FragmentActivity implements OnMapReadyCal
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(35.909876, -79.053225);
-        LatLng sydney1 = new LatLng(35.9091, -79.052);
-        LatLng sydney2 = new LatLng(35.9092, -79.0568);
-        LatLng sydney3 = new LatLng(35.9098, -79.0571);
-        LatLng sydney4 = new LatLng(35.9095, -79.0558);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Azra"));
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.addMarker(new MarkerOptions().position(sydney1).title("Shanel"));
-        mMap.addMarker(new MarkerOptions().position(sydney2).title("Patricia"));
-        mMap.addMarker(new MarkerOptions().position(sydney3).title("Pearl"));
-        mMap.addMarker(new MarkerOptions().position(sydney4).title("Jane"));
     }
 }

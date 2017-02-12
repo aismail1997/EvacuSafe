@@ -82,6 +82,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.azra.evacusafe_ui.MainActivityadmin" />
         </activity>
+        <activity
+            android:name=".MapsActivityuser"
+            android:label="@string/title_activity_maps_activityuser">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.azra.evacusafe_ui.ScrollingActivity_user" />
+        </activity>
+        <activity
+            android:name=".UserListActivity"
+            android:label="@string/title_activity_user_list"
+            android:parentActivityName=".MainActivityadmin"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.azra.evacusafe_ui.MainActivityadmin" />
+        </activity>
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

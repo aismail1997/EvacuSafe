@@ -5,48 +5,45 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
+import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 
-import com.google.android.gms.cast.Cast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import android.hardware.SensorEventListener;
-import android.widget.ToggleButton;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import static android.hardware.Sensor.TYPE_STEP_DETECTOR;
+public class MapsActivityuser extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-public class ScrollingActivity_user extends AppCompatActivity implements SensorEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+    private GoogleMap mMap;// Acquire a reference to the system Location Manager
     private Location mLastLocation;
+    private Location mNewLocation;
     private GoogleApiClient mGoogleApiClient;
 
     private SensorManager senSensorManager;
     private SensorManager senSensorManager1;
     private Sensor senAccelerometer;
     private Sensor senPressure;
-    private float newposition_x;
-    private float newposition_y;
+    //private float newposition_x;
+    //private float newposition_y;
 
     private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
-
-    Button button;
+    //private float last_x, last_y, last_z;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -55,10 +52,12 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
                     .build();
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrolling_user);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_maps_admin);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senSensorManager1 = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -68,20 +67,17 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         senSensorManager1.registerListener(this, senPressure, SensorManager.SENSOR_DELAY_NORMAL);
 
-        button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(this);
-
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggle);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                } else {
-                    // The toggle is disabled
-                }
-            }
-        });
     }
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
 
     @Override
     public void onConnected(Bundle connectionHint) {
@@ -97,13 +93,13 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
+        /*if (mLastLocation != null) {
             TextView editText4 = (TextView)findViewById(R.id.editText4);
             editText4.setText("lat :" + String.valueOf(mLastLocation.getLatitude()));
             TextView editText5 = (TextView)findViewById(R.id.editText5);
             editText5.setText("long :" + String.valueOf(mLastLocation.getLongitude()));
 
-        }
+        }*/
     }
 
     protected void onStop() {
@@ -130,29 +126,13 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
 
-            if (mySensor.getType() == Sensor.TYPE_PRESSURE) {
-                float x = sensorEvent.values[0];
-                TextView editText6 = (TextView) findViewById(R.id.editText6);
-                editText6.setText("pressure :" + Float.toString(x));
-                /*float y = sensorEvent.values[1];
-                TextView editText2 = (TextView) findViewById(R.id.editText2);
-                editText2.setText("y :" + Float.toString(y));
-                float z = sensorEvent.values[2];
-                TextView editText3 = (TextView) findViewById(R.id.editText3);
-                editText3.setText("z :" + Float.toString(z));*/
-            }
+        if (mySensor.getType() == Sensor.TYPE_PRESSURE) {
+            float pressure = sensorEvent.values[0];
+        }
 
-            if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
-            TextView editText1 = (TextView)findViewById(R.id.editText1);
-            editText1.setText("x :" + Float.toString(x));
             float y = sensorEvent.values[1];
-            TextView editText2 = (TextView)findViewById(R.id.editText2);
-            editText2.setText("y :" + Float.toString(y));
-            //float z = sensorEvent.values[2]; //z is gravity
-            //TextView editText3 = (TextView)findViewById(R.id.editText3);
-            //editText3.setText("z :" + Float.toString(z));
-
             long curTime = System.currentTimeMillis();
 
             if ((curTime - lastUpdate) > 100) {
@@ -161,14 +141,16 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
 
                 //float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
                 if (x > 1 || y > 1 || x < -1 || y < -1) {
-                    newposition_x += x;
-                    newposition_y += y;
-                    TextView editText3 = (TextView)findViewById(R.id.editText3);
-                    editText3.setText("coor :" + Float.toString(newposition_x) + ", " + Float.toString(newposition_y));
+                    //float newposition_x += x;
+                    //float newposition_y += y;
+                    //mNewLocation.setLatitude(mLastLocation.getLatitude());//newposition_x);
+                    //mNewLocation.setLongitude(mLastLocation.getLatitude());//newposition_y);
+                    //TextView editText3 = (TextView)findViewById(R.id.editText3);
+                    //editText3.setText("coor :" + Float.toString(newposition_x) + ", " + Float.toString(newposition_y));
                 }
 
-                last_x = x;
-                last_y = y;
+                //last_x = x;
+                //last_y = y;
                 //last_z = z;
             }
         }
@@ -192,10 +174,19 @@ public class ScrollingActivity_user extends AppCompatActivity implements SensorE
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.button) {
-            Intent intent = new Intent(this, MapsActivityuser.class);
-            startActivity(intent);
-        }
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng mLast = new LatLng(35.9099879, -79.0534268);
+        /*if (mNewLocation != null) {
+            mLast = new LatLng(mNewLocation.getLatitude(), mNewLocation.getLongitude());
+        }*/
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(mLast).title("User"));
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(mLast));
+        //onStop();
     }
 }

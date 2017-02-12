@@ -9,23 +9,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/wallet_dim_foreground_inverse_holo_dark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.azra.evacusafe_ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="EvacuSafe"
-        android:textColor="@color/colorAccent"
-        android:textSize="80dp"
-        android:textStyle="bold"
-        android:fontFamily="cursive"
-        android:elegantTextHeight="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
 
     <Button
         android:id="@+id/button"
@@ -45,6 +33,20 @@
         android:text="Admin"
         android:textSize="20dp"
         android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="CoLocate"
+        android:textColor="@color/wallet_holo_blue_light"
+        android:textSize="65dp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:elegantTextHeight="true"
+        android:layout_marginTop="84dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
